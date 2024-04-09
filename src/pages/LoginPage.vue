@@ -4,7 +4,7 @@
       <h3>Login</h3>
     </div>
     <div class="form-body">
-      <form action="#">
+      <form action="api/auth/login" method="POST" @submit.prevent="handleLogin">
         <div class="input-field">
           <label for="email">Enter your E-mail</label>
           <input
@@ -12,6 +12,7 @@
             id="email"
             class="form-control"
             placeholder="user@gmail.com"
+            v-model="email"
           />
         </div>
         <div class="input-field">
@@ -24,6 +25,7 @@
               name="password"
               value=""
               placeholder="Enter password"
+              v-model="password"
             />
             <span
               toggle="#password-field"
@@ -32,20 +34,20 @@
           </div>
         </div>
         <div class="forgot-pass">
-          <p><a href="forgot.html">Forgot password?</a></p>
+          <p><router-link to="/forgot-password">Forgot password?</router-link></p>
           <input type="submit" class="btn" value="Login" />
         </div>
         <div class="create-account">
           <h6>Don’t have an account?</h6>
-          <h6><a href="registration.html">Create an account</a></h6>
+          <h6><router-link to="/register">Create an account</router-link></h6>
         </div>
         <div class="or-para">
           <p>Or</p>
         </div>
         <div class="social-links">
-          <a href="#"><img :src="GoogleIcon" alt="Google" /></a>
-          <a href="#"><img :src="AppleIcon" alt="Apple" /></a>
-          <a href="#"><img :src="FacebookIcon" alt="Facebook" /></a>
+          <a href="#" role="button" @click.prevent="onGoogleLogin"><img :src="GoogleIcon" alt="Google" /></a>
+          <a href="#" role="button" @click.prevent="onAppleLogin"><img :src="AppleIcon" alt="Apple" /></a>
+          <a href="#" role="button" @click.prevent="onFacebookLogin"><img :src="FacebookIcon" alt="Facebook" /></a>
         </div>
       </form>
     </div>
@@ -53,6 +55,11 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue';
+
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
+
 import GoogleIcon from 'components/icons/google.svg';
 import FacebookIcon from 'components/icons/facebook.svg';
 import AppleIcon from 'components/icons/apple.svg';
@@ -60,4 +67,41 @@ import AppleIcon from 'components/icons/apple.svg';
 defineOptions({
   name: 'LoginPage',
 });
+
+const onGoogleLogin = () => {
+  console.log('Google Login');
+};
+
+const onAppleLogin = () => {
+  console.log('Apple Login');
+};
+
+const onFacebookLogin = () => {
+  console.log('Facebook Login');
+};
+
+
+const email = ref('');
+const password = ref('');
+
+const handleLogin = () => {
+  if (!email.value) {
+    toast('Please enter your email', {
+      autoClose: 3000,
+      type: 'error',
+    })
+  }
+  else if (!password.value) {
+    toast('Please enter your password', {
+      autoClose: 3000,
+      type: 'error',
+    })
+  }
+  else {
+    console.log('Login Successful', {
+      autoClose: 3000,
+      type: 'success',
+    })
+  }
+};
 </script>
