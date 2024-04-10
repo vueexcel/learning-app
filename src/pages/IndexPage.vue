@@ -7,15 +7,8 @@
       </div>
       <div class="cards-slider-wrap">
         <div class="items">
-          <a href="level.html" class="item">
-            <div class="single-card single-card-blue">
-              <h6>
-                Present simple <br />
-                <b>level 2</b>
-              </h6>
-              <p>Phrases: 80</p>
-            </div>
-          </a>
+
+        <CourseCard :title="'Present simple'" :level="1" :phrases="80"></CourseCard>
           <a href="level.html" class="item">
             <div class="single-card single-card-blue">
               <h6>
@@ -241,6 +234,7 @@
 
 <script setup lang="ts">
 import MainLayout from 'src/layouts/MainLayout.vue';
+import CourseCard from 'src/components/CourseCard.vue';
 
 defineOptions({
   name: 'IndexPage',
