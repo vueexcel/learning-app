@@ -7,7 +7,7 @@
             <img :src="AvatarIcon" alt="Avatar" />
           </div>
           <div>
-            <h5>Etech</h5>
+            <h5>{{store.user}}</h5>
             <p>Connected Via Google</p>
           </div>
         </div>
@@ -49,11 +49,11 @@ import InstagramIcon from 'components/icons/instagram.svg';
 import SupportIcon from 'components/icons/support.svg';
 import TeamIcon from 'components/icons/team.svg';
 import ShareIcon from 'components/icons/share.svg';
+import HomeIcon from 'components/icons/home.svg';
+import SettingsIcon from 'components/icons/settings.svg';
+import { useUserStore } from 'src/stores/useUserStore';
 
-
-import MainLayout from 'src/layouts/MainLayout.vue';
-
-
+const store = useUserStore();
 
 defineOptions({
   name: 'SettingPage',

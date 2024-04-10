@@ -51,13 +51,17 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-
-import { toast } from 'vue3-toastify';
-import 'vue3-toastify/dist/index.css';
+import axios from 'axios';
+import { useQuasar } from 'quasar';
+import { useRouter } from 'vue-router';
 
 import GoogleIcon from 'components/icons/google.svg';
 import FacebookIcon from 'components/icons/facebook.svg';
 import AppleIcon from 'components/icons/apple.svg';
+import { SERVER_URL } from 'src/constants';
+
+const router = useRouter()
+const $q = useQuasar();
 
 defineOptions({
   name: 'RegisterPage',
@@ -80,46 +84,51 @@ const email = ref('');
 const password = ref('');
 const rePassword = ref('');
 
+const showNotify = (message: string, type: 'positive' | 'negative' = 'negative') => {
+  $q.notify({
+    message: message,
+    color: type,
+    position: 'top',
+    timeout: 1000,
+  });
+}
+
+
 const handleRegister = () => {
   if (!name.value) {
-    toast('Please enter your name', {
-      autoClose: 3000,
-      type: 'error',
-    })
+    showNotify('Please enter your name');
   }
   else if (!email.value) {
-    toast('Please enter your email', {
-      autoClose: 3000,
-      type: 'error',
-    })
+    showNotify('Please enter your email');
   }
   else if (!password.value) {
-    toast('Please enter your password', {
-      autoClose: 3000,
-      type: 'error',
-    })
+    showNotify('Please enter your password');
   }
   else if (!rePassword.value) {
-    toast('Please re-enter your password', {
-      autoClose: 3000,
-      type: 'error',
-    })
+    showNotify('Please re-enter your password');
   }
 
   else if (password.value !== rePassword.value) {
-    toast('Passwords do not match', {
-      autoClose: 3000,
-      type: 'error',
-    })
+    showNotify('Passwords do not match');
   }
 
   else {
-    console.log('Registration successful: ', {
+    axios.post(`${SERVER_URL}/api/register`, {
       name: name.value,
       email: email.value,
       password: password.value,
-      rePassword: rePassword.value
+    })
+    .then((response) => {
+      console.log(response);
+      if(response.data.status === 'success') {
+          showNotify('Registration Successful', 'positive');
+          router.push('/login');
+      }
+    })
+    .catch((error) => {
+      console.log(error.response.data.errors.email);
+        showNotify(error.response.data.errors.email);
     });
-  }
-};
+  };
+}
 </script>

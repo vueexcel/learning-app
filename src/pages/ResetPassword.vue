@@ -40,9 +40,19 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
-import { toast } from 'vue3-toastify';
-import 'vue3-toastify/dist/index.css';
+import { useQuasar } from 'quasar';
 import ArrowLeftIcon from 'components/icons/arrow-left.svg';
+
+const $q = useQuasar();
+
+const showNotify = (message: string, type: 'positive' | 'negative' = 'negative') => {
+  $q.notify({
+    message: message,
+    color: type,
+    position: 'top',
+    timeout: 1000,
+  });
+}
 
 defineOptions({
   name: 'ResetPassword',
@@ -55,21 +65,14 @@ const confirmNewPassword = ref('');
 
 const handleResetPassword = () => {
   if (!newPassword.value || !confirmNewPassword.value) {
-    toast('Please enter new password and confirm new password', {
-      autoClose: 3000,
-      type: 'error',
-    })
+    showNotify('Please enter new password and confirm new password')
   } else if (newPassword.value !== confirmNewPassword.value) {
-    toast('New password and confirm new password do not match', {
-      autoClose: 3000,
-      type: 'error',
-    })
+   showNotify('New password and confirm new password do not match')
   } else {
-    console.log('Password Reset successful', {
-      autoClose: 3000,
-      type: 'success',
-    })
-  }
+    console.log('Password Reset successful')
+    showNotify('Password Reset successful', 'positive');
+    router.push('/login');
+}
 };
 </script>
 

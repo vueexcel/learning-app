@@ -55,14 +55,19 @@
 </template>
 
 <script setup lang="ts">
+import axios from 'axios';
 import { ref } from 'vue';
-
-import { toast } from 'vue3-toastify';
-import 'vue3-toastify/dist/index.css';
+import { useQuasar } from 'quasar';
+import { useRouter } from 'vue-router';
 
 import GoogleIcon from 'components/icons/google.svg';
 import FacebookIcon from 'components/icons/facebook.svg';
 import AppleIcon from 'components/icons/apple.svg';
+import { SERVER_URL } from 'src/constants';
+
+const $q = useQuasar();
+
+const router = useRouter();
 
 defineOptions({
   name: 'LoginPage',
@@ -84,23 +89,38 @@ const onFacebookLogin = () => {
 const email = ref('');
 const password = ref('');
 
+const showNotify = (message: string ,type:'negative'|'positive' =  'negative') => {
+  $q.notify({
+    message: message,
+    color: type,
+    position: 'top',
+    timeout: 1000,
+  });
+}
+
 const handleLogin = () => {
   if (!email.value) {
-    toast('Please enter your email', {
-      autoClose: 3000,
-      type: 'error',
-    })
+    showNotify('Please enter your email');
   }
   else if (!password.value) {
-    toast('Please enter your password', {
-      autoClose: 3000,
-      type: 'error',
-    })
+    showNotify('Please enter your password');
   }
   else {
-    console.log('Login Successful', {
-      autoClose: 3000,
-      type: 'success',
+    axios.post(`${SERVER_URL}/api/login`, {
+      email: email.value,
+      password: password.value,
+    }).then((response) => {
+      console.log(response);
+      if(response.data.status === 'Success') {
+          showNotify('Login Successful','positive');
+          router.push('/');
+      }else {
+        console.log('invalid credentials');
+        showNotify('Invalid Credentials');
+      }
+    }).catch((error) => {
+      console.log(error);
+      showNotify('Login Failed');
     })
   }
 };
