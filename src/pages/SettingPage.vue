@@ -13,7 +13,7 @@
             <img :src="AvatarIcon" alt="Avatar" />
           </div>
           <div>
-            <h5>Ivan Ivanov</h5>
+            <h5>{{store.user}}</h5>
             <p>Connected Via Google</p>
           </div>
         </div>
@@ -64,6 +64,9 @@ import TeamIcon from 'components/icons/team.svg';
 import ShareIcon from 'components/icons/share.svg';
 import HomeIcon from 'components/icons/home.svg';
 import SettingsIcon from 'components/icons/settings.svg';
+import { useUserStore } from 'src/stores/useUserStore';
+
+const store = useUserStore();
 
 defineOptions({
   name: 'SettingPage',

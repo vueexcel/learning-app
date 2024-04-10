@@ -36,29 +36,29 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-
-import { toast } from 'vue3-toastify';
-import 'vue3-toastify/dist/index.css';
 import ArrowLeftIcon from 'components/icons/arrow-left.svg';
+import { useQuasar } from 'quasar';
+const $q = useQuasar();
 
 defineOptions({
   name: 'ForgotPassword',
 });
-
+const showNotify = (message: string, type:'negative'|'positive'= 'negative' ) => {
+    $q.notify({
+      message: message,
+      color: type,
+      position: 'top',
+      timeout: 1000,
+    });
+  }
 const router = useRouter();
 const email = ref('');
 
 const handleForgotPassword = () => {
   if (!email.value) {
-    toast('Please enter your email', {
-      autoClose: 3000,
-      type: 'error',
-    })
+    showNotify('Please enter your email');
   } else {
-    console.log('Login Successful', {
-      autoClose: 3000,
-      type: 'success',
-    })
+    showNotify('Login Successful', 'positive');
   }
 };
 
