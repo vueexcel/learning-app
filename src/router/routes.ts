@@ -3,7 +3,7 @@ import { RouteRecordRaw } from 'vue-router';
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    name: 'home',
+    name: 'courses',
     component: () => import('pages/IndexPage.vue')
   },
   {
@@ -17,29 +17,39 @@ const routes: RouteRecordRaw[] = [
     component: () => import('pages/RegisterPage.vue')
   },
   {
-    path: '/forgot-password',
-    name: 'forgot-password',
+    path: '/forgot',
+    name: 'forgot',
     component: () => import('pages/ForgotPassword.vue')
   },
   {
-    path: '/all-lesson',
-    name: 'all-lesson',
+    path: '/reset/:token',
+    name: 'reset',
+    component: () => import('pages/ResetPassword.vue')
+  },
+  {
+    path: '/category/:id',
+    name: 'category',
     component: () => import('pages/AllLessonPage.vue')
   },
   {
-    path: '/lesson',
+    path: '/course/:id/lesson',
     name: 'lesson',
     component: () => import('pages/LessonPage.vue')
   },
   {
-    path: '/level',
-    name: 'level',
+    path: '/course/:id',
+    name: 'course',
     component: () => import('pages/LevelPage.vue')
   },
   {
     path: '/settings',
     name: 'settings',
     component: () => import('pages/SettingPage.vue')
+  },
+  {
+    path:'/course/:id/rules',
+    name:'rules',
+    component: () => import('pages/RulesPage.vue')
   },
 
   // Always leave this as last one,
