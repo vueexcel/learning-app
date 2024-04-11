@@ -1,12 +1,12 @@
 <template>
   <section class="screen-wrapper">
-    <div class="screen-header">
-      <q-btn v-if="backBtn" flat round dense @click.prevent="$router.back()">
+    <div class="screen-header" v-if="backBtn">
+      <q-btn flat round dense @click.prevent="$router.back()">
         <img :src="ArrowLeftIcon" alt="Arrow Left" />
       </q-btn>
       <h3>{{ title }}</h3>
     </div>
-    <slot></slot>
+   <slot></slot>
     <div class="app-screen-footer">
       <div>
         <router-link to="/" active-class="active">
@@ -30,7 +30,7 @@ defineOptions({
 });
 
 defineProps<{
-  title: string;
+  title?: string;
   backBtn: boolean;
 }>();
 </script>

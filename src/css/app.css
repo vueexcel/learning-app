@@ -227,7 +227,7 @@ h6 {
 }
 .single-card:after {
   content: '';
-  background: url(../images/bg-item.svg) no-repeat center center;
+  background: url(../components/icons/bg-item.svg) no-repeat center center;
   display: block;
   background-size: cover;
   width: 100%;

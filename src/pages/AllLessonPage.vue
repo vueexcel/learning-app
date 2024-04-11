@@ -1,42 +1,17 @@
 <template>
-  <section class="screen-wrapper">
-    <div class="screen-header">
-      <a href="javascript:void(0);" onclick="history.back()"
-        ><img :src="ArrowLeftIcon" alt="Arrow Left"
-      /></a>
-      <h3>A1 Beginner</h3>
-    </div>
+  <main-layout :title="'A1 Beginner'" back-btn>
     <div class="cards-wrapper">
-      <a href="lesson.html" class="single-card single-card-blue">
-        <h6>Present simple</h6>
-        <p>Phrases: 80</p>
-      </a>
-      <a href="lesson.html" class="single-card single-card-blue">
-        <h6>Future simple</h6>
-        <p>Phrases: 80</p>
-      </a>
-      <a href="lesson.html" class="single-card single-card-blue">
-        <h6>Present simple</h6>
-        <p>Phrases: 80</p>
-      </a>
-      <a href="lesson.html" class="single-card single-card-blue">
-        <h6>Future simple</h6>
-        <p>Phrases: 80</p>
-      </a>
+      <CourseCard :title="'Present simple'"  :phrases="80" background-color="blue"></CourseCard>
+      <CourseCard :title="'Present simple'"  :phrases="80" background-color="blue"></CourseCard>
+      <CourseCard :title="'Present simple'"  :phrases="80" background-color="blue"></CourseCard>
+      <CourseCard :title="'Present simple'"  :phrases="80" background-color="blue"></CourseCard>
     </div>
-    <div class="app-screen-footer">
-      <div>
-        <a href="#"><img :src="HomeIcon" alt="Home" /></a>
-        <a href="#"><img :src="SettingsIcon" alt="Settings" /></a>
-      </div>
-    </div>
-  </section>
+  </main-layout>
 </template>
 
 <script setup lang="ts">
-import HomeIcon from 'components/icons/home.svg';
-import SettingsIcon from 'components/icons/settings.svg';
-import ArrowLeftIcon from 'components/icons/arrow-left.svg';
+import CourseCard from 'src/components/CourseCard.vue';
+import MainLayout from 'src/layouts/MainLayout.vue';
 
 defineOptions({
   name: 'AllLessonPage',
