@@ -1,7 +1,7 @@
 <template>
   <div class="lesson-page">
     <!-- Login Screen -->
-    <section class="screen-wrapper" v-if="countdown === 0">
+    <section class="screen-wrapper" v-if="countdown === 0" style="display: flex; flex-direction: column;">
       <div class="lesson-page-header">
         <a href="#close-lesson"><img :src="CrossIcon" alt="Cross"></a>
         <div class="progress-bar-top">
@@ -9,11 +9,14 @@
           <em style="width: 165px;"></em>
         </div>
       </div>
-      <div class="lesson-page-body">
+      <div class="lesson-page-body" style="flex: 1;display: flex; flex-direction: column;justify-content: center;">
         <div class="lesson-text-block">
           <div class="lesson-paras">
             <h2>Она любит покупать продукты в магазине</h2>
-            <h2 id="english-phrase" href="englishPhrase">She likes to buy groceries at the store</h2>
+            <transition name="slide-fade" >
+              <h2 id="english-phrase" href="englishPhrase" v-if="showEnglishPhras">She likes to buy groceries at the store</h2>
+            </transition>
+
           </div>
           <div class="mute-slow">
             <a href="javascript:void(0)"><img :src="AudioIcon" alt="Audio"></a>
@@ -36,7 +39,7 @@
           <div class="lesson-footer">
             <a href="#change-level"><img :src="VolumeControlIcon" alt="Volume Control"></a>
             <a href="#report-error"><img :src="ErrorIcon" alt="Error"></a>
-            <a href="rules.html"><img :src="QuestionIcon" alt="Question"></a>
+            <RouterLink to="/course/1/rules"><img :src="QuestionIcon" alt="Question"></RouterLink>
           </div>
         </div>
       </div>
@@ -148,26 +151,24 @@ const email = ref('');
 const message = ref('');
 const countdown = ref(3);
 
+const showEnglishPhras = ref(false)
+
 const submitErrorReport = () => {
   // Your logic to submit error report
 };
 
 onMounted(() => {
   setTimeout(() => {
-    document.getElementById('englishPhrase').style.display = 'none';
-  }, 10000);
-
-  setTimeout(() => {
     showIncreaseLevel.value = true;
   }, 15000);
 
   setTimeout(() => {
-    document.getElementById('gradient-bar').classList.add('timelapse');
+    document.getElementById('training-starts').style.display = 'none';
   }, 3000);
 
   setTimeout(() => {
-    document.getElementById('training-starts').style.display = 'none';
-  }, 3000);
+    showEnglishPhras.value = true
+  }, 10000)
 
   const countdownInterval = setInterval(() => {
     if (countdown.value > 0) {
@@ -179,10 +180,26 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-  // Cleanup code if needed
+  // logic
 });
 </script>
 
+
+<style scoped>
+.slide-fade-enter-active {
+  transition: all 0.9s ease-out;
+}
+
+.slide-fade-leave-active {
+  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  transform: translateX(20px);
+  opacity: 0;
+}
+</style>
 
 
 
