@@ -1,9 +1,9 @@
 <template>
   <section class="screen-wrapper">
     <div class="screen-header">
-      <a href="javascript:void(0);" onclick="history.back()"
-        ><img :src="ArrowLeftIcon" alt="Arrow Left"
-      /></a>
+      <a href="" role="button" @click.prevent="router.back()">
+        <img :src="ArrowLeftIcon" alt="Arrow Left" />
+      </a>
       <h3>Forgot Password?</h3>
     </div>
     <div class="wrapper-vertical-center">
@@ -14,7 +14,7 @@
         </p>
       </div>
       <div class="form-body py-0">
-        <form action="#">
+        <form action="api/auth/forgot" method="POST" enctype="multipart/form-data" @submit.prevent="handleForgotPassword">
           <div class="input-field">
             <label for="email">Enter your E-mail</label>
             <input
@@ -34,9 +34,32 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 import ArrowLeftIcon from 'components/icons/arrow-left.svg';
+import { useQuasar } from 'quasar';
+const $q = useQuasar();
 
 defineOptions({
   name: 'ForgotPassword',
 });
+const showNotify = (message: string, type:'negative'|'positive'= 'negative' ) => {
+    $q.notify({
+      message: message,
+      color: type,
+      position: 'top',
+      timeout: 1000,
+    });
+  }
+const router = useRouter();
+const email = ref('');
+
+const handleForgotPassword = () => {
+  if (!email.value) {
+    showNotify('Please enter your email');
+  } else {
+    showNotify('Login Successful', 'positive');
+  }
+};
+
 </script>

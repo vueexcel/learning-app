@@ -4,7 +4,7 @@
       <h3>Login</h3>
     </div>
     <div class="form-body">
-      <form action="#">
+      <form action="api/auth/login" method="POST" @submit.prevent="handleLogin">
         <div class="input-field">
           <label for="email">Enter your E-mail</label>
           <input
@@ -12,6 +12,7 @@
             id="email"
             class="form-control"
             placeholder="user@gmail.com"
+            v-model="email"
           />
         </div>
         <div class="input-field">
@@ -24,6 +25,7 @@
               name="password"
               value=""
               placeholder="Enter password"
+              v-model="password"
             />
             <span
               toggle="#password-field"
@@ -32,20 +34,20 @@
           </div>
         </div>
         <div class="forgot-pass">
-          <p><a href="forgot.html">Forgot password?</a></p>
+          <p><router-link to="/forgot-password">Forgot password?</router-link></p>
           <input type="submit" class="btn" value="Login" />
         </div>
         <div class="create-account">
           <h6>Don’t have an account?</h6>
-          <h6><a href="registration.html">Create an account</a></h6>
+          <h6><router-link to="/register">Create an account</router-link></h6>
         </div>
         <div class="or-para">
           <p>Or</p>
         </div>
         <div class="social-links">
-          <a href="#"><img :src="GoogleIcon" alt="Google" /></a>
-          <a href="#"><img :src="AppleIcon" alt="Apple" /></a>
-          <a href="#"><img :src="FacebookIcon" alt="Facebook" /></a>
+          <a href="#" role="button" @click.prevent="onGoogleLogin"><img :src="GoogleIcon" alt="Google" /></a>
+          <a href="#" role="button" @click.prevent="onAppleLogin"><img :src="AppleIcon" alt="Apple" /></a>
+          <a href="#" role="button" @click.prevent="onFacebookLogin"><img :src="FacebookIcon" alt="Facebook" /></a>
         </div>
       </form>
     </div>
@@ -53,11 +55,73 @@
 </template>
 
 <script setup lang="ts">
+import axios from 'axios';
+import { ref } from 'vue';
+import { useQuasar } from 'quasar';
+import { useRouter } from 'vue-router';
+
 import GoogleIcon from 'components/icons/google.svg';
 import FacebookIcon from 'components/icons/facebook.svg';
 import AppleIcon from 'components/icons/apple.svg';
+import { SERVER_URL } from 'src/constants';
+
+const $q = useQuasar();
+
+const router = useRouter();
 
 defineOptions({
   name: 'LoginPage',
 });
+
+const onGoogleLogin = () => {
+  console.log('Google Login');
+};
+
+const onAppleLogin = () => {
+  console.log('Apple Login');
+};
+
+const onFacebookLogin = () => {
+  console.log('Facebook Login');
+};
+
+
+const email = ref('');
+const password = ref('');
+
+const showNotify = (message: string ,type:'negative'|'positive' =  'negative') => {
+  $q.notify({
+    message: message,
+    color: type,
+    position: 'top',
+    timeout: 1000,
+  });
+}
+
+const handleLogin = () => {
+  if (!email.value) {
+    showNotify('Please enter your email');
+  }
+  else if (!password.value) {
+    showNotify('Please enter your password');
+  }
+  else {
+    axios.post(`${SERVER_URL}/api/login`, {
+      email: email.value,
+      password: password.value,
+    }).then((response) => {
+      console.log(response);
+      if(response.data.status === 'Success') {
+          showNotify('Login Successful','positive');
+          router.push('/');
+      }else {
+        console.log('invalid credentials');
+        showNotify('Invalid Credentials');
+      }
+    }).catch((error) => {
+      console.log(error);
+      showNotify('Login Failed');
+    })
+  }
+};
 </script>
